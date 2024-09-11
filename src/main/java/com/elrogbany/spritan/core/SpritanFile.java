@@ -8,8 +8,8 @@ import java.util.ArrayList;
 public class SpritanFile implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    ArrayList<ArrayList<SpritanColor>> pixelData;
-    SpritanColor selectedColor;
+    private ArrayList<ArrayList<SpritanColor>> pixelData;
+    private SpritanColor selectedColor;
     
     public SpritanFile(){
         pixelData = new ArrayList<>();
@@ -23,7 +23,7 @@ public class SpritanFile implements Serializable {
     public void SetPixelData(ArrayList<ArrayList<SpritanColor>> pixelData) {
         this.pixelData = pixelData;
     }
-
+    
     public SpritanColor GetSelectedColor() {
         return selectedColor;
     }

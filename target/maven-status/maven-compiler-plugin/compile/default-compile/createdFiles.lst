@@ -1,5 +1,8 @@
+com/elrogbany/spritan/utilities/FileOperations.class
 module-info.class
-com/elrogbany/spritan/core/SpritanFile.class
+com/elrogbany/spritan/ui/SpritanMenu.class
 com/elrogbany/spritan/utilities/SerializationUtil.class
 com/elrogbany/sptitan/App.class
+com/elrogbany/spritan/core/SpritanFile.class
+com/elrogbany/spritan/ui/SpritanGrid.class
 com/elrogbany/spritan/utilities/SpritanColor.class
