@@ -3,10 +3,14 @@ package com.elrogbany.sptitan;
 import com.elrogbany.spritan.core.SpritanFile;
 import com.elrogbany.spritan.ui.SpritanGrid;
 import com.elrogbany.spritan.ui.SpritanMenu;
+import com.elrogbany.spritan.ui.SpritanToolbar;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.ToolBar;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -21,11 +25,26 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
         stage.setTitle("Spritan");
-        
+
         MenuBar menuBar = SpritanMenu.GetMenuBar(stage, this);
-        root = new VBox(menuBar);
+        ToolBar toolbar = SpritanToolbar.GetToolbar(stage, this);
+
+        HBox hbox = new HBox();
+        hbox.setSpacing(10);
+
+        VBox gridPaneContainer = new VBox();
+        gridPaneContainer.setAlignment(javafx.geometry.Pos.CENTER);
+        
+        hbox.getChildren().add(toolbar);
+        hbox.getChildren().add(gridPaneContainer);
+        HBox.setHgrow(gridPaneContainer, Priority.ALWAYS);
+
+        root = new VBox(menuBar, hbox);
+        VBox.setVgrow(hbox, Priority.ALWAYS);
 
         var scene = new Scene(root, 640, 480);
+        scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
+
         stage.setScene(scene);
         stage.show();
     }
@@ -36,14 +55,18 @@ public class App extends Application {
     
     public void CreateGrid(int height, int width) {
         spritanGrid = new SpritanGrid(height, width);
-        root.getChildren().removeIf(node -> node instanceof GridPane);
-        root.getChildren().add(spritanGrid.GetGridPane());
+        UpdateGridPane(spritanGrid.GetGridPane());
     }
     
     public void CreateGrid(int height, int width, SpritanFile spritanFile) {
         spritanGrid = new SpritanGrid(height, width, spritanFile);
-        root.getChildren().removeIf(node -> node instanceof GridPane);
-        root.getChildren().add(spritanGrid.GetGridPane());
+        UpdateGridPane(spritanGrid.GetGridPane());
+    }
+    
+    private void UpdateGridPane(GridPane gridPane) {
+        VBox gridPaneContainer = (VBox) ((HBox) root.getChildren().get(1)).getChildren().get(1);
+        gridPaneContainer.getChildren().clear();
+        gridPaneContainer.getChildren().add(gridPane);
     }
 
     public static void main(String[] args) {

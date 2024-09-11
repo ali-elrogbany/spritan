@@ -41,6 +41,8 @@ public class SpritanGrid {
         }
 
         pixelsGrid.setOnMouseDragged(e -> HandleDrag(e.getX(), e.getY()));
+        
+        pixelsGrid.getStyleClass().add("grid-pane");
     }
 
     private void HandleDrag(double x, double y) {
