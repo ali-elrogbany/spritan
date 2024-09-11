@@ -120,6 +120,47 @@ public class App extends Application {
         dialog.showAndWait();
     }
     
+    private void OnOpenFile() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SPRITAN Files", "*.ser"));
+        File file = fileChooser.showOpenDialog(null);
+
+        if (file != null) {
+            try (FileInputStream fileIn = new FileInputStream(file);
+                 ObjectInputStream in = new ObjectInputStream(fileIn)) {
+                spritanFile = (SpritanFile) in.readObject();
+                currentFile = file; // Update the current file reference
+                System.out.println("File opened successfully.");
+
+                CreateGrid(spritanFile.GetPixelData().size(), spritanFile.GetPixelData().get(0).size());
+                DrawSavedImage();
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    private void OnSaveFile() {
+        if (currentFile == null) {
+            OnSaveAsFile(); // If no file has been saved before, call Save As
+        } else {
+            SaveToFile(currentFile);
+        }
+    }
+    
+    private void OnSaveAsFile() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SPRITAN Files", "*.ser"));
+        File file = fileChooser.showSaveDialog(null);
+
+        if (file != null) {
+            currentFile = file; // Update the current file reference
+            SaveToFile(file);
+        }
+    }
+    
     private void CreateGrid(int height, int width) {
         pixelsGrid = new GridPane();
         pixelsGrid.setPadding(new Insets(1));
@@ -208,47 +249,6 @@ public class App extends Application {
                     pixel.setFill(javafxColor);
                 }
             }
-    }
-    }
-    
-    private void OnOpenFile() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open File");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SPRITAN Files", "*.ser"));
-        File file = fileChooser.showOpenDialog(null);
-
-        if (file != null) {
-            try (FileInputStream fileIn = new FileInputStream(file);
-                 ObjectInputStream in = new ObjectInputStream(fileIn)) {
-                spritanFile = (SpritanFile) in.readObject();
-                currentFile = file; // Update the current file reference
-                System.out.println("File opened successfully.");
-
-                CreateGrid(spritanFile.GetPixelData().size(), spritanFile.GetPixelData().get(0).size());
-                DrawSavedImage();
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    
-    private void OnSaveFile() {
-        if (currentFile == null) {
-            OnSaveAsFile(); // If no file has been saved before, call Save As
-        } else {
-            SaveToFile(currentFile);
-        }
-    }
-    
-    private void OnSaveAsFile() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save File");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SPRITAN Files", "*.ser"));
-        File file = fileChooser.showSaveDialog(null);
-
-        if (file != null) {
-            currentFile = file; // Update the current file reference
-            SaveToFile(file);
         }
     }
     
