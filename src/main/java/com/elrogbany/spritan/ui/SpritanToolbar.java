@@ -1,5 +1,8 @@
 package com.elrogbany.spritan.ui;
 
+import com.elrogbany.spritan.tools.EraserTool;
+import com.elrogbany.spritan.tools.ITool;
+import com.elrogbany.spritan.tools.PenTool;
 import com.elrogbany.sptitan.App;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Button;
@@ -17,6 +20,16 @@ public class SpritanToolbar {
 
         Button penButton = CreateStyledButton("Pen");
         Button eraserButton = CreateStyledButton("Eraser");
+        
+        penButton.setOnAction(e -> {
+            SetActiveButton(penButton);
+            SetCurrentTool(app, new PenTool());
+        });
+        
+        eraserButton.setOnAction(e -> {
+            SetActiveButton(eraserButton);
+            SetCurrentTool(app, new EraserTool());
+        });
 
         toolbar.getItems().addAll(penButton, eraserButton);
 
@@ -31,7 +44,6 @@ public class SpritanToolbar {
 
         button.setOnMouseEntered(e -> button.getStyleClass().add("hovered"));
         button.setOnMouseExited(e -> button.getStyleClass().remove("hovered"));
-        button.setOnAction(e -> SetActiveButton(button));
 
         return button;
     }
@@ -42,5 +54,9 @@ public class SpritanToolbar {
         }
         activeButton = button;
         activeButton.getStyleClass().add("active");
+    }
+    
+    private static void SetCurrentTool(App app, ITool tool){
+        app.GetSpritanGrid().SetCurrentTool(tool);
     }
 }

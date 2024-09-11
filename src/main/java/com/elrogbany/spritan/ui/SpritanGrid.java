@@ -1,6 +1,7 @@
 package com.elrogbany.spritan.ui;
 
 import com.elrogbany.spritan.core.SpritanFile;
+import com.elrogbany.spritan.tools.ITool;
 import com.elrogbany.spritan.utilities.SpritanColor;
 import java.util.ArrayList;
 import javafx.scene.Node;
@@ -11,6 +12,8 @@ import javafx.scene.shape.Rectangle;
 public class SpritanGrid {
     private GridPane pixelsGrid;
     private SpritanFile spritanFile;
+    
+    private ITool currentTool;
     
     public SpritanGrid(int height, int width) {
         spritanFile = new SpritanFile();
@@ -24,8 +27,20 @@ public class SpritanGrid {
         DrawSavedImage();
     }
     
+    public GridPane GetGridPane() {
+        return pixelsGrid;
+    }
+    
     public SpritanFile GetSpritanFile(){
         return spritanFile;
+    }
+    
+    public ITool GetCurrentTool(){
+        return currentTool;
+    }
+    
+    public void SetCurrentTool(ITool tool){
+        currentTool = tool;
     }
     
     private void CreateGrid(int height, int width) {
@@ -50,13 +65,10 @@ public class SpritanGrid {
         int col = (int) (x / (pixelsGrid.getWidth() / pixelsGrid.getColumnCount()));
         Node node = GetNodeAt(row, col);
 
-        if (node != null) {
+        if (node != null && currentTool != null) {
             Rectangle pixel = (Rectangle) node;
             
-            Color javafxColor = javafx.scene.paint.Color.rgb(spritanFile.GetSelectedColor().GetRed(), spritanFile.GetSelectedColor().GetGreen(), spritanFile.GetSelectedColor().GetBlue(), spritanFile.GetSelectedColor().GetAlpha() / 255.0);
-            pixel.setFill(javafxColor);
-            
-            spritanFile.ChangePixelColor(row, col);
+            currentTool.OnPixelClick(this, pixel, row, col);
         }
     }
 
@@ -86,9 +98,5 @@ public class SpritanGrid {
                 }
             }
         }
-    }
-
-    public GridPane GetGridPane() {
-        return pixelsGrid;
     }
 }

@@ -17,6 +17,7 @@ public class SpritanColor implements Serializable{
     public static final SpritanColor CYAN = new SpritanColor(0, 255, 255);
     public static final SpritanColor MAGENTA = new SpritanColor(255, 0, 255);
     public static final SpritanColor GREY = new SpritanColor(128, 128, 128);
+    public static final SpritanColor TRANSPARENT = new SpritanColor(255, 255, 255, 0);
     
     private int r, g, b, a;
 

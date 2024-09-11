@@ -33,7 +33,7 @@ public class SpritanFile implements Serializable {
     }
     
     public void CreateEmptyGrid(int height, int width){
-        SpritanColor defaultColor = SpritanColor.WHITE;
+        SpritanColor defaultColor = SpritanColor.TRANSPARENT;
         pixelData = new ArrayList<>();
         
         for (int i = 0; i < height; i++){
@@ -46,5 +46,9 @@ public class SpritanFile implements Serializable {
     
     public void ChangePixelColor(int row, int column){
         pixelData.get(row).set(column, selectedColor);
+    }
+    
+    public void ErasePixelColor(int row, int column){
+        pixelData.get(row).set(column, SpritanColor.TRANSPARENT);
     }
 }
