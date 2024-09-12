@@ -29,6 +29,7 @@ public class SpritanGrid {
         DrawSavedImage();
         
         SpritanColorPaletteBar.UpdateColorPalette(this.spritanFile.GetColorPalette());
+        SpritanColorPaletteBar.SetSelectedColorDisplay(spritanFile.GetSelectedColor());
     }
     
     public GridPane GetGridPane() {

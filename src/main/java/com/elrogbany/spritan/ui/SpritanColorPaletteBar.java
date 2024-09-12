@@ -8,7 +8,6 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -22,6 +21,8 @@ public class SpritanColorPaletteBar {
     
     private static App app;
     private static GridPane colorsGrid;
+    
+    private static Rectangle selectedColorDisplay;
 
     // Method to create the ColorPaletteBar UI
     public static VBox GetColorPaletteBar(Stage stage, App app) {
@@ -66,8 +67,12 @@ public class SpritanColorPaletteBar {
 
         VBox buttonToolbar = new VBox(10, createPaletteButton, savePaletteButton, loadPaletteButton);
         buttonToolbar.setPadding(new Insets(10));
+        
+        selectedColorDisplay = new Rectangle(COLOR_SIZE, COLOR_SIZE, Color.TRANSPARENT);
+        selectedColorDisplay.setStroke(Color.BLACK);
+        selectedColorDisplay.setStrokeWidth(2);
 
-        VBox vbox = new VBox(10, buttonToolbar, scrollPane);
+        VBox vbox = new VBox(10, buttonToolbar, scrollPane, selectedColorDisplay);
         vbox.setPadding(new Insets(10));
         VBox.setVgrow(colorsGrid, Priority.ALWAYS);
 
@@ -143,5 +148,11 @@ public class SpritanColorPaletteBar {
                 spritanFile.SetSelectedColor(color);
             }
         }
+        SetSelectedColorDisplay(color);
+    }
+    
+    public static void SetSelectedColorDisplay(SpritanColor color){
+        Color javafxColor = Color.rgb(color.GetRed(), color.GetGreen(), color.GetBlue(), color.GetAlpha() / 255.0);
+        selectedColorDisplay.setFill(javafxColor);
     }
 }
