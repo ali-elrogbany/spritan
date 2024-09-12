@@ -1,7 +1,9 @@
 com/elrogbany/spritan/utilities/FileOperations.class
 com/elrogbany/spritan/tools/PenTool.class
+com/elrogbany/spritan/core/SpritanColorPalette.class
 com/elrogbany/spritan/ui/SpritanToolbar.class
 com/elrogbany/spritan/tools/ITool.class
+com/elrogbany/spritan/ui/SpritanColorPaletteBar.class
 module-info.class
 com/elrogbany/spritan/ui/SpritanMenu.class
 com/elrogbany/spritan/tools/EraserTool.class

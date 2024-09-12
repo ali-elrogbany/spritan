@@ -1,6 +1,8 @@
 package com.elrogbany.sptitan;
 
+import com.elrogbany.spritan.core.SpritanColorPalette;
 import com.elrogbany.spritan.core.SpritanFile;
+import com.elrogbany.spritan.ui.SpritanColorPaletteBar;
 import com.elrogbany.spritan.ui.SpritanGrid;
 import com.elrogbany.spritan.ui.SpritanMenu;
 import com.elrogbany.spritan.ui.SpritanToolbar;
@@ -29,14 +31,15 @@ public class App extends Application {
         MenuBar menuBar = SpritanMenu.GetMenuBar(stage, this);
         ToolBar toolbar = SpritanToolbar.GetToolbar(stage, this);
 
-        HBox hbox = new HBox();
-        hbox.setSpacing(10);
+        VBox colorPaletteBar = SpritanColorPaletteBar.GetColorPaletteBar(stage, this);
 
         VBox gridPaneContainer = new VBox();
         gridPaneContainer.setAlignment(javafx.geometry.Pos.CENTER);
-        
-        hbox.getChildren().add(toolbar);
-        hbox.getChildren().add(gridPaneContainer);
+
+        HBox hbox = new HBox();
+        hbox.setSpacing(10);
+        hbox.getChildren().addAll(toolbar, gridPaneContainer, colorPaletteBar);
+
         HBox.setHgrow(gridPaneContainer, Priority.ALWAYS);
 
         root = new VBox(menuBar, hbox);

@@ -19,12 +19,16 @@ public class SpritanGrid {
         spritanFile = new SpritanFile();
         spritanFile.CreateEmptyGrid(height, width);
         CreateGrid(height, width);
+        
+        SpritanColorPaletteBar.UpdateColorPalette(spritanFile.GetColorPalette());
     }
 
     public SpritanGrid(int height, int width, SpritanFile spritanFile) {
         this.spritanFile = spritanFile;
         CreateGrid(height, width);
         DrawSavedImage();
+        
+        SpritanColorPaletteBar.UpdateColorPalette(this.spritanFile.GetColorPalette());
     }
     
     public GridPane GetGridPane() {

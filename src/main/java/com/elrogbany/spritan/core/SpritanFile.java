@@ -10,10 +10,12 @@ public class SpritanFile implements Serializable {
 
     private ArrayList<ArrayList<SpritanColor>> pixelData;
     private SpritanColor selectedColor;
+    private SpritanColorPalette colorPalette;
     
     public SpritanFile(){
         pixelData = new ArrayList<>();
         selectedColor = SpritanColor.BLACK;
+        colorPalette = new SpritanColorPalette();
     }
     
     public ArrayList<ArrayList<SpritanColor>> GetPixelData() {
@@ -30,6 +32,14 @@ public class SpritanFile implements Serializable {
 
     public void SetSelectedColor(SpritanColor selectedColor) {
         this.selectedColor = selectedColor;
+    }
+    
+    public SpritanColorPalette GetColorPalette(){
+        return colorPalette;
+    }
+    
+    public void SetColorPalette(SpritanColorPalette colorPalette){
+        this.colorPalette = colorPalette;
     }
     
     public void CreateEmptyGrid(int height, int width){
