@@ -22,13 +22,11 @@ public class SpritanToolbar {
         Button eraserButton = CreateStyledButton("Eraser");
         
         penButton.setOnAction(e -> {
-            SetActiveButton(penButton);
-            SetCurrentTool(app, new PenTool());
+            SetCurrentTool(app, new PenTool(), penButton);
         });
         
         eraserButton.setOnAction(e -> {
-            SetActiveButton(eraserButton);
-            SetCurrentTool(app, new EraserTool());
+            SetCurrentTool(app, new EraserTool(), eraserButton);
         });
 
         toolbar.getItems().addAll(penButton, eraserButton);
@@ -56,7 +54,12 @@ public class SpritanToolbar {
         activeButton.getStyleClass().add("active");
     }
     
-    private static void SetCurrentTool(App app, ITool tool){
-        app.GetSpritanGrid().SetCurrentTool(tool);
+    private static void SetCurrentTool(App app, ITool tool, Button button){
+        SpritanGrid grid = app.GetSpritanGrid();
+        
+        if (grid != null){
+            grid.SetCurrentTool(tool);
+            SetActiveButton(button);
+        }
     }
 }
