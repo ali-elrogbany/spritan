@@ -5,7 +5,6 @@ import com.elrogbany.sptitan.App;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class SpritanMenu {

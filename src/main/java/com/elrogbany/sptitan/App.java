@@ -1,6 +1,5 @@
 package com.elrogbany.sptitan;
 
-import com.elrogbany.spritan.core.SpritanColorPalette;
 import com.elrogbany.spritan.core.SpritanFile;
 import com.elrogbany.spritan.ui.SpritanColorPaletteBar;
 import com.elrogbany.spritan.ui.SpritanGrid;

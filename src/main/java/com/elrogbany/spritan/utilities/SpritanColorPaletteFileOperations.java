@@ -1,7 +1,6 @@
 package com.elrogbany.spritan.utilities;
 
 import com.elrogbany.spritan.core.SpritanColorPalette;
-import com.elrogbany.spritan.core.SpritanFile;
 import com.elrogbany.spritan.ui.SpritanColorPaletteBar;
 import com.elrogbany.spritan.ui.SpritanGrid;
 import com.elrogbany.sptitan.App;
@@ -12,7 +11,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
 public class SpritanColorPaletteFileOperations {
     public static void SavePalette(SpritanColorPalette palette) {
