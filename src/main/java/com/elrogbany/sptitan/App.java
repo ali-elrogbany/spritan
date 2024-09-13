@@ -3,6 +3,7 @@ package com.elrogbany.sptitan;
 import com.elrogbany.spritan.core.SpritanFile;
 import com.elrogbany.spritan.ui.SpritanColorPaletteBar;
 import com.elrogbany.spritan.ui.SpritanGrid;
+import com.elrogbany.spritan.ui.SpritanLayerToolbar;
 import com.elrogbany.spritan.ui.SpritanMenu;
 import com.elrogbany.spritan.ui.SpritanToolbar;
 import javafx.application.Application;
@@ -40,8 +41,10 @@ public class App extends Application {
         hbox.getChildren().addAll(toolbar, gridPaneContainer, colorPaletteBar);
 
         HBox.setHgrow(gridPaneContainer, Priority.ALWAYS);
+        
+        ToolBar layerToolbar = SpritanLayerToolbar.GetLayerToolbar();
 
-        root = new VBox(menuBar, hbox);
+        root = new VBox(menuBar, hbox, layerToolbar);
         VBox.setVgrow(hbox, Priority.ALWAYS);
 
         var scene = new Scene(root, 640, 480);

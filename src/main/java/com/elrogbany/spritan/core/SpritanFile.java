@@ -8,22 +8,27 @@ import java.util.ArrayList;
 public class SpritanFile implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private ArrayList<ArrayList<SpritanColor>> pixelData;
+    private ArrayList<SpritanLayer> layers;
+    private int selectedLayerIndex;
+    
     private SpritanColor selectedColor;
     private SpritanColorPalette colorPalette;
     
     public SpritanFile(){
-        pixelData = new ArrayList<>();
+        layers = new ArrayList<SpritanLayer>();
+        layers.add(new SpritanLayer());
+        selectedLayerIndex = 0;
+        
         selectedColor = SpritanColor.BLACK;
         colorPalette = new SpritanColorPalette();
     }
     
-    public ArrayList<ArrayList<SpritanColor>> GetPixelData() {
-        return pixelData;
+    public ArrayList<SpritanLayer> GetLayers(){
+        return layers;
     }
-
-    public void SetPixelData(ArrayList<ArrayList<SpritanColor>> pixelData) {
-        this.pixelData = pixelData;
+    
+    public SpritanLayer GetSelectedLayer(){
+        return layers.get(selectedLayerIndex);
     }
     
     public SpritanColor GetSelectedColor() {
@@ -43,22 +48,16 @@ public class SpritanFile implements Serializable {
     }
     
     public void CreateEmptyGrid(int height, int width){
-        SpritanColor defaultColor = SpritanColor.TRANSPARENT;
-        pixelData = new ArrayList<>();
-        
-        for (int i = 0; i < height; i++){
-            pixelData.add(new ArrayList<>());
-            for (int j = 0; j < width; j++){
-                pixelData.get(i).add(defaultColor);
-            }
+        for (int i = 0; i < layers.size(); i++){
+            layers.get(i).CreateEmptyGrid(height, width);
         }
     }
     
     public void ChangePixelColor(int row, int column){
-        pixelData.get(row).set(column, selectedColor);
+        GetSelectedLayer().ChangePixelColor(row, column, selectedColor);
     }
     
     public void ErasePixelColor(int row, int column){
-        pixelData.get(row).set(column, SpritanColor.TRANSPARENT);
+        GetSelectedLayer().ErasePixelColor(row, column);
     }
 }

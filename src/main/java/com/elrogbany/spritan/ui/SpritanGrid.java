@@ -2,6 +2,7 @@ package com.elrogbany.spritan.ui;
 
 import com.elrogbany.spritan.core.SpritanColorPalette;
 import com.elrogbany.spritan.core.SpritanFile;
+import com.elrogbany.spritan.core.SpritanLayer;
 import com.elrogbany.spritan.tools.ITool;
 import com.elrogbany.spritan.utilities.SpritanColor;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class SpritanGrid {
         CreateGrid(height, width);
         
         ChangeColorPalette(spritanFile.GetColorPalette());
+        SpritanLayerToolbar.DisplayLayers(spritanFile.GetLayers());
     }
 
     public SpritanGrid(int height, int width, SpritanFile spritanFile) {
@@ -30,6 +32,7 @@ public class SpritanGrid {
         DrawSavedImage();
         
         ChangeColorPalette(this.spritanFile.GetColorPalette(), spritanFile.GetSelectedColor());
+        SpritanLayerToolbar.DisplayLayers(spritanFile.GetLayers());
     }
     
     public GridPane GetGridPane() {
@@ -105,17 +108,21 @@ public class SpritanGrid {
     }
     
     private void DrawSavedImage(){
-        ArrayList<ArrayList<SpritanColor>> pixelData = spritanFile.GetPixelData();
+        ArrayList<SpritanLayer> layers = spritanFile.GetLayers();
         
-        for (int i = 0; i < pixelData.size(); i++) {
-            for (int j = 0; j < pixelData.get(0).size(); j++) {
-                SpritanColor color = pixelData.get(i).get(j);
-                Color javafxColor = javafx.scene.paint.Color.rgb(color.GetRed(), color.GetGreen(), color.GetBlue(), color.GetAlpha() / 255.0);
+        for (int k = (layers.size() - 1); k >= 0; k--){
+            ArrayList<ArrayList<SpritanColor>> pixelData = layers.get(k).GetPixelData();
+        
+            for (int i = 0; i < pixelData.size(); i++) {
+                for (int j = 0; j < pixelData.get(0).size(); j++) {
+                    SpritanColor color = pixelData.get(i).get(j);
+                    Color javafxColor = javafx.scene.paint.Color.rgb(color.GetRed(), color.GetGreen(), color.GetBlue(), color.GetAlpha() / 255.0);
 
-                Node node = GetNodeAt(i, j);
-                if (node instanceof Rectangle) {
-                    Rectangle pixel = (Rectangle) node;
-                    pixel.setFill(javafxColor);
+                    Node node = GetNodeAt(i, j);
+                    if (node instanceof Rectangle) {
+                        Rectangle pixel = (Rectangle) node;
+                        pixel.setFill(javafxColor);
+                    }
                 }
             }
         }

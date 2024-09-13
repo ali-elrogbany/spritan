@@ -64,7 +64,10 @@ public class SpritanFileOperations {
                  ObjectInputStream in = new ObjectInputStream(fileIn)) {
                 SpritanFile spritanFile = (SpritanFile) in.readObject();
                 currentFile = file;
-                app.CreateGrid(spritanFile.GetPixelData().size(), spritanFile.GetPixelData().get(0).size(), spritanFile);
+                
+                int height = spritanFile.GetLayers().get(0).GetPixelData().size();
+                int width = spritanFile.GetLayers().get(0).GetPixelData().get(0).size();
+                app.CreateGrid(height, width, spritanFile);
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
