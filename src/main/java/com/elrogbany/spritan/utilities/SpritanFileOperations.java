@@ -17,7 +17,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class FileOperations {
+public class SpritanFileOperations {
     private static File currentFile;
 
     public static void OnNewFile(Stage parentStage, App app) {

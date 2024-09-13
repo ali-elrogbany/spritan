@@ -1,6 +1,6 @@
 package com.elrogbany.spritan.ui;
 
-import com.elrogbany.spritan.utilities.FileOperations;
+import com.elrogbany.spritan.utilities.SpritanFileOperations;
 import com.elrogbany.sptitan.App;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -18,10 +18,10 @@ public class SpritanMenu {
         MenuItem saveFile = CreateStyledMenuItem("Save");
         MenuItem saveAsFile = CreateStyledMenuItem("Save As");
         
-        newFile.setOnAction(e -> FileOperations.OnNewFile(stage, app));
-        openFile.setOnAction(e -> FileOperations.OnOpenFile(app));
-        saveFile.setOnAction(e -> FileOperations.OnSaveFile(app));
-        saveAsFile.setOnAction(e -> FileOperations.OnSaveAsFile(app));
+        newFile.setOnAction(e -> SpritanFileOperations.OnNewFile(stage, app));
+        openFile.setOnAction(e -> SpritanFileOperations.OnOpenFile(app));
+        saveFile.setOnAction(e -> SpritanFileOperations.OnSaveFile(app));
+        saveAsFile.setOnAction(e -> SpritanFileOperations.OnSaveAsFile(app));
         
         fileMenu.getItems().addAll(newFile, openFile, saveFile, saveAsFile);
         
