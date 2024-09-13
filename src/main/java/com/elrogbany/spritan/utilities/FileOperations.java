@@ -56,7 +56,7 @@ public class FileOperations {
 
     public static void OnOpenFile(App app) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SPRITAN Files", "*.ser"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SPRITAN Files", "*.spt"));
         File file = fileChooser.showOpenDialog(null);
 
         if (file != null) {
@@ -81,7 +81,7 @@ public class FileOperations {
 
     public static void OnSaveAsFile(App app) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SPRITAN Files", "*.ser"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SPRITAN Files", "*.spt"));
         File file = fileChooser.showSaveDialog(null);
 
         if (file != null) {
