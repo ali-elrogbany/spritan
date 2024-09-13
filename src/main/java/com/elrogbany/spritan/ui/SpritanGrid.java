@@ -1,5 +1,6 @@
 package com.elrogbany.spritan.ui;
 
+import com.elrogbany.spritan.core.SpritanColorPalette;
 import com.elrogbany.spritan.core.SpritanFile;
 import com.elrogbany.spritan.tools.ITool;
 import com.elrogbany.spritan.utilities.SpritanColor;
@@ -20,7 +21,7 @@ public class SpritanGrid {
         spritanFile.CreateEmptyGrid(height, width);
         CreateGrid(height, width);
         
-        SpritanColorPaletteBar.UpdateColorPalette(spritanFile.GetColorPalette());
+        ChangeColorPalette(spritanFile.GetColorPalette());
     }
 
     public SpritanGrid(int height, int width, SpritanFile spritanFile) {
@@ -28,8 +29,7 @@ public class SpritanGrid {
         CreateGrid(height, width);
         DrawSavedImage();
         
-        SpritanColorPaletteBar.UpdateColorPalette(this.spritanFile.GetColorPalette());
-        SpritanColorPaletteBar.SetSelectedColorDisplay(spritanFile.GetSelectedColor());
+        ChangeColorPalette(this.spritanFile.GetColorPalette(), spritanFile.GetSelectedColor());
     }
     
     public GridPane GetGridPane() {
@@ -46,6 +46,22 @@ public class SpritanGrid {
     
     public void SetCurrentTool(ITool tool){
         currentTool = tool;
+    }
+    
+    public void ChangeColorPalette(SpritanColorPalette colorPalette){
+        spritanFile.SetColorPalette(colorPalette);
+        SpritanColorPaletteBar.UpdateColorPalette(spritanFile.GetColorPalette());
+        
+        spritanFile.SetSelectedColor(SpritanColor.BLACK);
+        SpritanColorPaletteBar.SetSelectedColorDisplay(SpritanColor.BLACK);
+    }
+    
+    public void ChangeColorPalette(SpritanColorPalette colorPalette, SpritanColor selectedColor){
+        spritanFile.SetColorPalette(colorPalette);
+        SpritanColorPaletteBar.UpdateColorPalette(spritanFile.GetColorPalette());
+        
+        spritanFile.SetSelectedColor(selectedColor);
+        SpritanColorPaletteBar.SetSelectedColorDisplay(selectedColor);
     }
     
     private void CreateGrid(int height, int width) {

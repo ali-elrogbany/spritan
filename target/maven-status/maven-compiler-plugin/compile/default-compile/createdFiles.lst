@@ -9,6 +9,7 @@ com/elrogbany/spritan/tools/EraserTool.class
 com/elrogbany/spritan/utilities/SerializationUtil.class
 com/elrogbany/sptitan/App.class
 com/elrogbany/spritan/utilities/SpritanFileOperations.class
+com/elrogbany/spritan/utilities/SpritanColorPaletteFileOperations.class
 com/elrogbany/spritan/core/SpritanFile.class
 com/elrogbany/spritan/ui/SpritanGrid.class
 com/elrogbany/spritan/utilities/SpritanColor.class

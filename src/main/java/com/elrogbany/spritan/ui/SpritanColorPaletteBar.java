@@ -3,6 +3,7 @@ package com.elrogbany.spritan.ui;
 import com.elrogbany.spritan.core.SpritanColorPalette;
 import com.elrogbany.spritan.core.SpritanFile;
 import com.elrogbany.spritan.utilities.SpritanColor;
+import com.elrogbany.spritan.utilities.SpritanColorPaletteFileOperations;
 import com.elrogbany.sptitan.App;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -23,6 +24,8 @@ public class SpritanColorPaletteBar {
     private static GridPane colorsGrid;
     
     private static Rectangle selectedColorDisplay;
+    
+    private static SpritanColorPalette colorPalette;
 
     // Method to create the ColorPaletteBar UI
     public static VBox GetColorPaletteBar(Stage stage, App app) {
@@ -51,18 +54,25 @@ public class SpritanColorPaletteBar {
         Button createPaletteButton = new Button("New");
         createPaletteButton.setOnAction(e -> {
             SpritanColorPalette newPalette = new SpritanColorPalette();
-            UpdateColorPalette(newPalette);
-            System.out.println("New Color Palette!");
+            
+            SpritanGrid grid = app.GetSpritanGrid();
+                
+            if (grid != null){
+                grid.ChangeColorPalette(newPalette);
+            }
+            else{
+                SpritanColorPaletteBar.UpdateColorPalette(newPalette);
+            }
         });
 
         Button savePaletteButton = new Button("Save");
         savePaletteButton.setOnAction(e -> {
-            System.out.println("Save Color Palette!");
+            SpritanColorPaletteFileOperations.SavePalette(colorPalette);
         });
 
         Button loadPaletteButton = new Button("Load");
         loadPaletteButton.setOnAction(e -> {
-            System.out.println("Load Color Palette!");
+            SpritanColorPaletteFileOperations.LoadPalette(app);
         });
 
         VBox buttonToolbar = new VBox(10, createPaletteButton, savePaletteButton, loadPaletteButton);
@@ -80,6 +90,8 @@ public class SpritanColorPaletteBar {
     }
 
     public static void UpdateColorPalette(SpritanColorPalette palette) {
+        colorPalette = palette;
+        
         colorsGrid.getChildren().clear();
         colorsGrid.getColumnConstraints().clear();
         colorsGrid.getRowConstraints().clear();
