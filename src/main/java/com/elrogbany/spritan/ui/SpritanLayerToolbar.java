@@ -31,6 +31,7 @@ public class SpritanLayerToolbar {
                 SpritanFile spritanFile = grid.GetSpritanFile();
                 spritanFile.AddLayer();
                 DisplayLayers(spritanFile);
+                grid.DrawSavedImage();
             }
         });
 
@@ -43,6 +44,7 @@ public class SpritanLayerToolbar {
                 SpritanFile spritanFile = grid.GetSpritanFile();
                 spritanFile.RemoveSelectedLayer();
                 DisplayLayers(spritanFile);
+                grid.DrawSavedImage();
             }
         });
 

@@ -21,6 +21,7 @@ public class SpritanGrid {
         spritanFile = new SpritanFile();
         spritanFile.CreateEmptyGrid(height, width);
         CreateGrid(height, width);
+        DrawSavedImage();
         
         ChangeColorPalette(spritanFile.GetColorPalette());
         SpritanLayerToolbar.DisplayLayers(spritanFile);
@@ -107,22 +108,18 @@ public class SpritanGrid {
         return null;
     }
     
-    private void DrawSavedImage(){
-        ArrayList<SpritanLayer> layers = spritanFile.GetLayers();
-        
-        for (int k = (layers.size() - 1); k >= 0; k--){
-            ArrayList<ArrayList<SpritanColor>> pixelData = layers.get(k).GetPixelData();
-        
-            for (int i = 0; i < pixelData.size(); i++) {
-                for (int j = 0; j < pixelData.get(0).size(); j++) {
-                    SpritanColor color = pixelData.get(i).get(j);
-                    Color javafxColor = javafx.scene.paint.Color.rgb(color.GetRed(), color.GetGreen(), color.GetBlue(), color.GetAlpha() / 255.0);
+    public void DrawSavedImage(){
+        ArrayList<ArrayList<SpritanColor>> blendedImage = spritanFile.GetBlendedImage();
+                
+        for (int i = 0; i < blendedImage.size(); i++) {
+            for (int j = 0; j < blendedImage.get(0).size(); j++) {
+                SpritanColor color = blendedImage.get(i).get(j);
+                Color javafxColor = javafx.scene.paint.Color.rgb(color.GetRed(), color.GetGreen(), color.GetBlue(), color.GetAlpha() / 255.0);
 
-                    Node node = GetNodeAt(i, j);
-                    if (node instanceof Rectangle) {
-                        Rectangle pixel = (Rectangle) node;
-                        pixel.setFill(javafxColor);
-                    }
+                Node node = GetNodeAt(i, j);
+                if (node instanceof Rectangle) {
+                    Rectangle pixel = (Rectangle) node;
+                    pixel.setFill(javafxColor);
                 }
             }
         }

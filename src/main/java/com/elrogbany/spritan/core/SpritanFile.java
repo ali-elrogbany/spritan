@@ -14,6 +14,9 @@ public class SpritanFile implements Serializable {
     private SpritanColor selectedColor;
     private SpritanColorPalette colorPalette;
     
+    private int height;
+    private int width;
+    
     public SpritanFile(){
         layers = new ArrayList<SpritanLayer>();
         layers.add(new SpritanLayer());
@@ -56,6 +59,9 @@ public class SpritanFile implements Serializable {
     }
     
     public void CreateEmptyGrid(int height, int width){
+        this.height = height;
+        this.width = width;
+        
         for (int i = 0; i < layers.size(); i++){
             layers.get(i).CreateEmptyGrid(height, width);
         }
@@ -70,13 +76,6 @@ public class SpritanFile implements Serializable {
     }
     
     public void AddLayer(){
-        int height = 0;
-        int width = 0;
-        if (layers.size() > 0){
-            ArrayList<ArrayList<SpritanColor>> firstLayerPixels = layers.get(0).GetPixelData();
-            height = firstLayerPixels.size();
-            width = firstLayerPixels.get(0).size();
-        }
         AddLayer(height, width);
     }
     
@@ -93,12 +92,29 @@ public class SpritanFile implements Serializable {
         SpritanLayer selectedLayer = layers.get(selectedLayerIndex);
         
         if (layers.size() == 1){
-            int height = selectedLayer.GetPixelData().size();
-            int width = selectedLayer.GetPixelData().get(0).size();
             AddLayer(height, width);
         }
         
         layers.remove(selectedLayer);
         selectedLayerIndex = 0;
+    }
+    
+    public ArrayList<ArrayList<SpritanColor>> GetBlendedImage(){
+        ArrayList<ArrayList<SpritanColor>> pixelData = new ArrayList<>();
+        
+        for (int i = 0; i < height; i++){
+            pixelData.add(new ArrayList<>());
+            
+            for (int j = 0; j < width; j++){
+                SpritanColor pixelColor = SpritanColor.TRANSPARENT;
+                
+                for (int k = (layers.size() - 1); k >= 0; k--){
+                    pixelColor = SpritanColor.BlendTwoColors(pixelColor, layers.get(k).GetPixelData().get(i).get(j));
+                }
+                
+                pixelData.get(i).add(pixelColor);
+            }
+        }
+        return pixelData;
     }
 }

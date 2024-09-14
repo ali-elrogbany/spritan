@@ -131,12 +131,43 @@ public class SpritanColor implements Serializable{
         return new SpritanColor(random.nextInt(256), random.nextInt(256), random.nextInt(256));
     }
 
-    public static SpritanColor predefined(String colorName) {
-        try {
-            return (SpritanColor) SpritanColor.class.getField(colorName.toUpperCase()).get(null);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("No predefined color named '" + colorName + "'");
+    public static SpritanColor BlendColors(SpritanColor... layers) {
+        if (layers == null || layers.length == 0) {
+            return SpritanColor.TRANSPARENT;
         }
+
+        SpritanColor finalColor = layers[0];
+
+        for (int i = 1; i < layers.length; i++) {
+            finalColor = BlendTwoColors(finalColor, layers[i]);
+        }
+
+        return finalColor;
+    }
+    
+    public static SpritanColor BlendTwoColors(SpritanColor bottom, SpritanColor top) {
+        double alphaBottom = bottom.GetAlpha() / 255.0;
+        double alphaTop = top.GetAlpha() / 255.0;
+
+        double finalAlpha = alphaTop + alphaBottom * (1 - alphaTop);
+
+        if (finalAlpha == 0) {
+            return SpritanColor.TRANSPARENT;
+        }
+
+        int finalRed = (int) (
+            (top.GetRed() * alphaTop + bottom.GetRed() * alphaBottom * (1 - alphaTop)) / finalAlpha
+        );
+        int finalGreen = (int) (
+            (top.GetGreen() * alphaTop + bottom.GetGreen() * alphaBottom * (1 - alphaTop)) / finalAlpha
+        );
+        int finalBlue = (int) (
+            (top.GetBlue() * alphaTop + bottom.GetBlue() * alphaBottom * (1 - alphaTop)) / finalAlpha
+        );
+
+        int finalAlpha255 = (int) (finalAlpha * 255);
+
+        return new SpritanColor(finalRed, finalGreen, finalBlue, finalAlpha255);
     }
 
     @Override
