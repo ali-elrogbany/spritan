@@ -23,7 +23,7 @@ public class SpritanGrid {
         CreateGrid(height, width);
         
         ChangeColorPalette(spritanFile.GetColorPalette());
-        SpritanLayerToolbar.DisplayLayers(spritanFile.GetLayers());
+        SpritanLayerToolbar.DisplayLayers(spritanFile);
     }
 
     public SpritanGrid(int height, int width, SpritanFile spritanFile) {
@@ -32,7 +32,7 @@ public class SpritanGrid {
         DrawSavedImage();
         
         ChangeColorPalette(this.spritanFile.GetColorPalette(), spritanFile.GetSelectedColor());
-        SpritanLayerToolbar.DisplayLayers(spritanFile.GetLayers());
+        SpritanLayerToolbar.DisplayLayers(spritanFile);
     }
     
     public GridPane GetGridPane() {

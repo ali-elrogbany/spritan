@@ -42,7 +42,7 @@ public class App extends Application {
 
         HBox.setHgrow(gridPaneContainer, Priority.ALWAYS);
         
-        ToolBar layerToolbar = SpritanLayerToolbar.GetLayerToolbar();
+        ToolBar layerToolbar = SpritanLayerToolbar.GetLayerToolbar(this);
 
         root = new VBox(menuBar, hbox, layerToolbar);
         VBox.setVgrow(hbox, Priority.ALWAYS);

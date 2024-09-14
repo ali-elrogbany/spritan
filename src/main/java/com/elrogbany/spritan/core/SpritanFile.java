@@ -31,6 +31,14 @@ public class SpritanFile implements Serializable {
         return layers.get(selectedLayerIndex);
     }
     
+    public int GetSelectedLayerIndex(){
+        return selectedLayerIndex;
+    }
+    
+    public void SetSelectedLayerIndex(int selectedLayerIndex){
+        this.selectedLayerIndex = selectedLayerIndex;
+    }
+    
     public SpritanColor GetSelectedColor() {
         return selectedColor;
     }
@@ -59,5 +67,38 @@ public class SpritanFile implements Serializable {
     
     public void ErasePixelColor(int row, int column){
         GetSelectedLayer().ErasePixelColor(row, column);
+    }
+    
+    public void AddLayer(){
+        int height = 0;
+        int width = 0;
+        if (layers.size() > 0){
+            ArrayList<ArrayList<SpritanColor>> firstLayerPixels = layers.get(0).GetPixelData();
+            height = firstLayerPixels.size();
+            width = firstLayerPixels.get(0).size();
+        }
+        AddLayer(height, width);
+    }
+    
+    public void AddLayer(int height, int width){
+        SpritanLayer newLayer = new SpritanLayer(height, width);
+        layers.add(newLayer);
+    }
+    
+    public void RemoveSelectedLayer(){
+        if (layers.size() == 0){
+            return;
+        }
+        
+        SpritanLayer selectedLayer = layers.get(selectedLayerIndex);
+        
+        if (layers.size() == 1){
+            int height = selectedLayer.GetPixelData().size();
+            int width = selectedLayer.GetPixelData().get(0).size();
+            AddLayer(height, width);
+        }
+        
+        layers.remove(selectedLayer);
+        selectedLayerIndex = 0;
     }
 }

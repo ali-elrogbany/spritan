@@ -1,58 +1,80 @@
 package com.elrogbany.spritan.ui;
 
+import com.elrogbany.spritan.core.SpritanFile;
 import com.elrogbany.spritan.core.SpritanLayer;
+import com.elrogbany.sptitan.App;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;
 import javafx.scene.control.Tooltip;
 
 import java.util.ArrayList;
+import javafx.scene.layout.VBox;
 
 public class SpritanLayerToolbar {
     
-    private static ToolBar layerToolbar;
+    private static VBox layerContainer;
+    
+    private static App app;
 
-    // Method to return the toolbar with basic layer actions
-    public static ToolBar GetLayerToolbar() {
-        layerToolbar = new ToolBar();
+    public static ToolBar GetLayerToolbar(App app) {
+        SpritanLayerToolbar.app = app;
+
+        ToolBar toolbar = new ToolBar();
+        layerContainer = new VBox();
 
         Button addLayerButton = new Button("Add Layer");
         addLayerButton.setTooltip(new Tooltip("Add a new layer"));
         addLayerButton.setOnAction(event -> {
-            // Logic to add a new layer
-            System.out.println("New layer added.");
+            SpritanGrid grid = app.GetSpritanGrid();
+            
+            if (grid != null) {
+                SpritanFile spritanFile = grid.GetSpritanFile();
+                spritanFile.AddLayer();
+                DisplayLayers(spritanFile);
+            }
         });
 
         Button removeLayerButton = new Button("Remove Layer");
         removeLayerButton.setTooltip(new Tooltip("Remove the selected layer"));
         removeLayerButton.setOnAction(event -> {
-            // Logic to remove a layer
-            System.out.println("Layer removed.");
+            SpritanGrid grid = app.GetSpritanGrid();
+            
+            if (grid != null) {
+                SpritanFile spritanFile = grid.GetSpritanFile();
+                spritanFile.RemoveSelectedLayer();
+                DisplayLayers(spritanFile);
+            }
         });
 
-        layerToolbar.getItems().addAll(addLayerButton, removeLayerButton);
-
-        return layerToolbar;
+        toolbar.getItems().addAll(addLayerButton, removeLayerButton);
+        toolbar.getItems().add(layerContainer);
+        
+        return toolbar;
     }
 
-    // Method to update the existing toolbar to display layers dynamically
-    public static void DisplayLayers(ArrayList<SpritanLayer> layers) {
-        // Remove all items from the toolbar except for the first two buttons (Add Layer, Remove Layer)
-        layerToolbar.getItems().removeIf(node -> layerToolbar.getItems().indexOf(node) > 1);
+    public static void DisplayLayers(SpritanFile spritanFile) {
+        layerContainer.getChildren().clear();
+        ArrayList<SpritanLayer> layers = spritanFile.GetLayers();
+        int selectedLayerIndex = spritanFile.GetSelectedLayerIndex();
 
         for (int i = 0; i < layers.size(); i++) {
             SpritanLayer layer = layers.get(i);
             Button layerButton = new Button(layer.GetName() != null ? layer.GetName() : "Layer " + (i + 1));
             layerButton.setTooltip(new Tooltip("Click to select or edit " + layer.GetName()));
 
-            // Set onAction for when the layer is clicked
+            if (i == selectedLayerIndex) {
+                layerButton.setStyle("-fx-background-color: lightblue; -fx-border-color: black; -fx-border-width: 2px;");
+            } else {
+                layerButton.setStyle("-fx-background-color: white;");
+            }
+
             int layerIndex = i;
             layerButton.setOnAction(event -> {
-                System.out.println("Layer " + (layerIndex + 1) + " clicked.");
-                // Add your logic for selecting or editing the layer here
+                spritanFile.SetSelectedLayerIndex(layerIndex);
+                DisplayLayers(spritanFile);
             });
 
-            // Add the layer button to the toolbar
-            layerToolbar.getItems().add(layerButton);
+            layerContainer.getChildren().add(layerButton);
         }
     }
 }
