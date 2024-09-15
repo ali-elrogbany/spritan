@@ -2,9 +2,9 @@ package com.elrogbany.spritan.ui;
 
 import com.elrogbany.spritan.core.SpritanColorPalette;
 import com.elrogbany.spritan.core.SpritanFile;
-import com.elrogbany.spritan.core.SpritanLayer;
 import com.elrogbany.spritan.tools.ITool;
 import com.elrogbany.spritan.utilities.SpritanColor;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
@@ -79,7 +79,8 @@ public class SpritanGrid {
                 pixelsGrid.add(pixel, col, row);
             }
         }
-
+        
+        pixelsGrid.setOnMouseClicked(e -> HandleDrag(e.getX(), e.getY()));
         pixelsGrid.setOnMouseDragged(e -> HandleDrag(e.getX(), e.getY()));
         
         pixelsGrid.getStyleClass().add("grid-pane");
@@ -122,6 +123,36 @@ public class SpritanGrid {
                     pixel.setFill(javafxColor);
                 }
             }
+        }
+    }
+    
+    public Memento TakeSnapshot(){
+        return new Memento(spritanFile.clone());
+    }
+    
+    public void Restore(Memento memento){
+        this.spritanFile = memento.GetSpritanFile();
+        
+        DrawSavedImage();
+        SpritanLayerToolbar.DisplayLayers(spritanFile);
+    }
+    
+    public static class Memento {
+        private final SpritanFile spritanFile;
+        
+        private final LocalDateTime dateCreated;
+
+        public Memento(SpritanFile spritanFile) {
+            this.spritanFile = spritanFile;
+            this.dateCreated = LocalDateTime.now();
+        }
+        
+        private SpritanFile GetSpritanFile(){
+            return spritanFile;
+        }
+        
+        public LocalDateTime GetDateCreated(){
+            return dateCreated;
         }
     }
 }

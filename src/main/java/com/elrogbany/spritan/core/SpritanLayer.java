@@ -4,7 +4,7 @@ import com.elrogbany.spritan.utilities.SpritanColor;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class SpritanLayer implements Serializable {
+public class SpritanLayer implements Serializable, Cloneable {
     private static final long serialVersionUID = 1L;
     
     private String name;
@@ -52,5 +52,26 @@ public class SpritanLayer implements Serializable {
     
     public void ErasePixelColor(int row, int column){
         pixelData.get(row).set(column, SpritanColor.TRANSPARENT);
+    }
+    
+    @Override
+    public SpritanLayer clone() {
+        try {
+            SpritanLayer cloned = (SpritanLayer) super.clone();
+            
+            // Deep copy of pixelData
+            cloned.pixelData = new ArrayList<>();
+            for (ArrayList<SpritanColor> row : pixelData) {
+                ArrayList<SpritanColor> clonedRow = new ArrayList<>();
+                for (SpritanColor color : row) {
+                    clonedRow.add(color.clone());
+                }
+                cloned.pixelData.add(clonedRow);
+            }
+            
+            return cloned;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

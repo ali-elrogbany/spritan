@@ -20,7 +20,6 @@ import javafx.stage.Stage;
 public class SpritanColorPaletteBar {
     private static final int COLOR_SIZE = 30;
     
-    private static App app;
     private static GridPane colorsGrid;
     
     private static Rectangle selectedColorDisplay;
@@ -28,9 +27,7 @@ public class SpritanColorPaletteBar {
     private static SpritanColorPalette colorPalette;
 
     // Method to create the ColorPaletteBar UI
-    public static VBox GetColorPaletteBar(Stage stage, App app) {
-        SpritanColorPaletteBar.app = app;
-        
+    public static VBox GetColorPaletteBar() {
         colorsGrid = new GridPane();
         colorsGrid.setHgap(5);
         colorsGrid.setVgap(5);
@@ -44,7 +41,7 @@ public class SpritanColorPaletteBar {
 
         scrollPane.setMaxWidth(COLOR_SIZE * 2 + 10);
 
-        SpritanGrid spritanGrid = app.GetSpritanGrid();
+        SpritanGrid spritanGrid = App.instance.GetSpritanGrid();
 
         if (spritanGrid != null) {
             SpritanColorPalette palette = spritanGrid.GetSpritanFile().GetColorPalette();
@@ -55,7 +52,7 @@ public class SpritanColorPaletteBar {
         createPaletteButton.setOnAction(e -> {
             SpritanColorPalette newPalette = new SpritanColorPalette();
             
-            SpritanGrid grid = app.GetSpritanGrid();
+            SpritanGrid grid = App.instance.GetSpritanGrid();
                 
             if (grid != null){
                 grid.ChangeColorPalette(newPalette);
@@ -72,7 +69,7 @@ public class SpritanColorPaletteBar {
 
         Button loadPaletteButton = new Button("Load");
         loadPaletteButton.setOnAction(e -> {
-            SpritanColorPaletteFileOperations.LoadPalette(app);
+            SpritanColorPaletteFileOperations.LoadPalette();
         });
 
         VBox buttonToolbar = new VBox(10, createPaletteButton, savePaletteButton, loadPaletteButton);
@@ -151,7 +148,7 @@ public class SpritanColorPaletteBar {
     }
 
     private static void HandleColorClick(SpritanColor color) {
-        SpritanGrid grid = app.GetSpritanGrid();
+        SpritanGrid grid = App.instance.GetSpritanGrid();
         
         if (grid != null){
             SpritanFile spritanFile = grid.GetSpritanFile();

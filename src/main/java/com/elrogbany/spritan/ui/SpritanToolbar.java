@@ -7,12 +7,11 @@ import com.elrogbany.sptitan.App;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;
-import javafx.stage.Stage;
 
 public class SpritanToolbar {
     private static Button activeButton;
 
-    public static ToolBar GetToolbar(Stage stage, App app) {
+    public static ToolBar GetToolbar() {
         ToolBar toolbar = new ToolBar();
         toolbar.setOrientation(Orientation.VERTICAL);
 
@@ -22,11 +21,11 @@ public class SpritanToolbar {
         Button eraserButton = CreateStyledButton("Eraser");
         
         penButton.setOnAction(e -> {
-            SetCurrentTool(app, new PenTool(), penButton);
+            SetCurrentTool(new PenTool(), penButton);
         });
         
         eraserButton.setOnAction(e -> {
-            SetCurrentTool(app, new EraserTool(), eraserButton);
+            SetCurrentTool(new EraserTool(), eraserButton);
         });
 
         toolbar.getItems().addAll(penButton, eraserButton);
@@ -54,8 +53,8 @@ public class SpritanToolbar {
         activeButton.getStyleClass().add("active");
     }
     
-    private static void SetCurrentTool(App app, ITool tool, Button button){
-        SpritanGrid grid = app.GetSpritanGrid();
+    private static void SetCurrentTool(ITool tool, Button button){
+        SpritanGrid grid = App.instance.GetSpritanGrid();
         
         if (grid != null){
             grid.SetCurrentTool(tool);

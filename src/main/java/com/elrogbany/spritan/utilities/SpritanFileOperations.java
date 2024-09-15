@@ -20,8 +20,7 @@ import javafx.stage.Stage;
 public class SpritanFileOperations {
     private static File currentFile;
 
-    public static void OnNewFile(Stage parentStage, App app) {
-        // Handle the dialog window for creating a new file
+    public static void OnNewFile(Stage parentStage) {
         Stage dialog = new Stage();
         dialog.setTitle("New File");
         dialog.initModality(Modality.APPLICATION_MODAL);
@@ -38,7 +37,7 @@ public class SpritanFileOperations {
             int height = Integer.parseInt(heightInput.getText());
             int width = Integer.parseInt(widthInput.getText());
             
-            app.CreateGrid(height, width);
+            App.instance.CreateGrid(height, width);
             
             dialog.close();
         });
@@ -54,7 +53,7 @@ public class SpritanFileOperations {
         dialog.showAndWait();
     }
 
-    public static void OnOpenFile(App app) {
+    public static void OnOpenFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SPRITAN Files", "*.spt"));
         File file = fileChooser.showOpenDialog(null);
@@ -67,36 +66,36 @@ public class SpritanFileOperations {
                 
                 int height = spritanFile.GetLayers().get(0).GetPixelData().size();
                 int width = spritanFile.GetLayers().get(0).GetPixelData().get(0).size();
-                app.CreateGrid(height, width, spritanFile);
+                App.instance.CreateGrid(height, width, spritanFile);
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public static void OnSaveFile(App app) {
+    public static void OnSaveFile() {
         if (currentFile == null) {
-            OnSaveAsFile(app);
+            OnSaveAsFile();
         } else {
-            SaveToFile(currentFile, app);
+            SaveToFile(currentFile);
         }
     }
 
-    public static void OnSaveAsFile(App app) {
+    public static void OnSaveAsFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SPRITAN Files", "*.spt"));
         File file = fileChooser.showSaveDialog(null);
 
         if (file != null) {
             currentFile = file;
-            SaveToFile(file, app);
+            SaveToFile(file);
         }
     }
 
-    private static void SaveToFile(File file, App app) {
+    private static void SaveToFile(File file) {
         try (FileOutputStream fileOut = new FileOutputStream(file);
              ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
-            out.writeObject(app.GetSpritanGrid().GetSpritanFile());
+            out.writeObject(App.instance.GetSpritanGrid().GetSpritanFile());
             System.out.println("File saved successfully.");
         } catch (IOException e) {
             e.printStackTrace();

@@ -13,21 +13,19 @@ import javafx.scene.layout.VBox;
 public class SpritanLayerToolbar {
     
     private static VBox layerContainer;
-    
-    private static App app;
 
-    public static ToolBar GetLayerToolbar(App app) {
-        SpritanLayerToolbar.app = app;
-
+    public static ToolBar GetLayerToolbar() {
         ToolBar toolbar = new ToolBar();
         layerContainer = new VBox();
 
         Button addLayerButton = new Button("Add Layer");
         addLayerButton.setTooltip(new Tooltip("Add a new layer"));
         addLayerButton.setOnAction(event -> {
-            SpritanGrid grid = app.GetSpritanGrid();
+            SpritanGrid grid = App.instance.GetSpritanGrid();
             
             if (grid != null) {
+                App.instance.SaveState();
+                
                 SpritanFile spritanFile = grid.GetSpritanFile();
                 spritanFile.AddLayer();
                 DisplayLayers(spritanFile);
@@ -38,9 +36,11 @@ public class SpritanLayerToolbar {
         Button removeLayerButton = new Button("Remove Layer");
         removeLayerButton.setTooltip(new Tooltip("Remove the selected layer"));
         removeLayerButton.setOnAction(event -> {
-            SpritanGrid grid = app.GetSpritanGrid();
+            SpritanGrid grid = App.instance.GetSpritanGrid();
             
             if (grid != null) {
+                App.instance.SaveState();
+                
                 SpritanFile spritanFile = grid.GetSpritanFile();
                 spritanFile.RemoveSelectedLayer();
                 DisplayLayers(spritanFile);

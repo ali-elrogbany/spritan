@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class SpritanColor implements Serializable{
+public class SpritanColor implements Serializable, Cloneable {
     private static final long serialVersionUID = 1L;
     
     public static final SpritanColor WHITE = new SpritanColor(255, 255, 255);
@@ -29,7 +29,7 @@ public class SpritanColor implements Serializable{
     }
 
     public SpritanColor(int r, int g, int b) {
-        this(r, g, b, 255); // Default alpha to 255
+        this(r, g, b, 255);
     }
 
     public int GetRed() {
@@ -181,5 +181,14 @@ public class SpritanColor implements Serializable{
     @Override
     public String toString() {
         return String.format("SpritanColor(r=%d, g=%d, b=%d, a=%d)", r, g, b, a);
+    }
+    
+    @Override
+    public SpritanColor clone() {
+        try {
+            return (SpritanColor) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

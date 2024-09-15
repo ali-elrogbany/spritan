@@ -8,7 +8,7 @@ import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 
 public class SpritanMenu {
-    public static MenuBar GetMenuBar(Stage stage, App app) {
+    public static MenuBar GetMenuBar(Stage stage) {
         Menu fileMenu = new Menu("File");
         fileMenu.getStyleClass().add("menu");
         
@@ -17,15 +17,26 @@ public class SpritanMenu {
         MenuItem saveFile = CreateStyledMenuItem("Save");
         MenuItem saveAsFile = CreateStyledMenuItem("Save As");
         
-        newFile.setOnAction(e -> SpritanFileOperations.OnNewFile(stage, app));
-        openFile.setOnAction(e -> SpritanFileOperations.OnOpenFile(app));
-        saveFile.setOnAction(e -> SpritanFileOperations.OnSaveFile(app));
-        saveAsFile.setOnAction(e -> SpritanFileOperations.OnSaveAsFile(app));
+        newFile.setOnAction(e -> SpritanFileOperations.OnNewFile(stage));
+        openFile.setOnAction(e -> SpritanFileOperations.OnOpenFile());
+        saveFile.setOnAction(e -> SpritanFileOperations.OnSaveFile());
+        saveAsFile.setOnAction(e -> SpritanFileOperations.OnSaveAsFile());
         
         fileMenu.getItems().addAll(newFile, openFile, saveFile, saveAsFile);
         
+        Menu editMenu = new Menu("Edit");
+        editMenu.getStyleClass().add("menu");
+        
+        MenuItem undoItem = CreateStyledMenuItem("Undo");
+        MenuItem redoItem = CreateStyledMenuItem("Redo");
+        
+        undoItem.setOnAction(e -> App.instance.Undo());
+        redoItem.setOnAction(e -> App.instance.Redo());
+        
+        editMenu.getItems().addAll(undoItem, redoItem);
+        
         MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().add(fileMenu);
+        menuBar.getMenus().addAll(fileMenu, editMenu);
         menuBar.getStyleClass().add("menu-bar");
 
         return menuBar;

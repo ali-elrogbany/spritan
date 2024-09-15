@@ -31,7 +31,7 @@ public class SpritanColorPaletteFileOperations {
         }
     }
     
-    public static SpritanColorPalette LoadPalette(App app) {
+    public static SpritanColorPalette LoadPalette() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Color Palette");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SPRITAN COLOR PALETTE Files", "*.scp"));
@@ -43,7 +43,7 @@ public class SpritanColorPaletteFileOperations {
 
                 SpritanColorPalette palette = (SpritanColorPalette) in.readObject();
                 
-                SpritanGrid grid = app.GetSpritanGrid();
+                SpritanGrid grid = App.instance.GetSpritanGrid();
                 
                 if (grid != null){
                     grid.ChangeColorPalette(palette);

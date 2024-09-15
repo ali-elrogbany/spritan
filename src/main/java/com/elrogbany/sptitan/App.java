@@ -3,9 +3,12 @@ package com.elrogbany.sptitan;
 import com.elrogbany.spritan.core.SpritanFile;
 import com.elrogbany.spritan.ui.SpritanColorPaletteBar;
 import com.elrogbany.spritan.ui.SpritanGrid;
+import com.elrogbany.spritan.ui.SpritanGrid.Memento;
 import com.elrogbany.spritan.ui.SpritanLayerToolbar;
 import com.elrogbany.spritan.ui.SpritanMenu;
 import com.elrogbany.spritan.ui.SpritanToolbar;
+import java.util.Deque;
+import java.util.LinkedList;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
@@ -21,17 +24,27 @@ import javafx.stage.Stage;
  * JavaFX App
  */
 public class App extends Application {
+    public static App instance;
+    
+    private Deque<Memento> history;
+    private Deque<Memento> redoHistory;
+    
     private VBox root;
     private SpritanGrid spritanGrid;
     
     @Override
     public void start(Stage stage) {
+        instance = this;
+        
+        history = new LinkedList<>();
+        redoHistory = new LinkedList<>();
+        
         stage.setTitle("Spritan");
 
-        MenuBar menuBar = SpritanMenu.GetMenuBar(stage, this);
-        ToolBar toolbar = SpritanToolbar.GetToolbar(stage, this);
+        MenuBar menuBar = SpritanMenu.GetMenuBar(stage);
+        ToolBar toolbar = SpritanToolbar.GetToolbar();
 
-        VBox colorPaletteBar = SpritanColorPaletteBar.GetColorPaletteBar(stage, this);
+        VBox colorPaletteBar = SpritanColorPaletteBar.GetColorPaletteBar();
 
         VBox gridPaneContainer = new VBox();
         gridPaneContainer.setAlignment(javafx.geometry.Pos.CENTER);
@@ -42,7 +55,7 @@ public class App extends Application {
 
         HBox.setHgrow(gridPaneContainer, Priority.ALWAYS);
         
-        ToolBar layerToolbar = SpritanLayerToolbar.GetLayerToolbar(this);
+        ToolBar layerToolbar = SpritanLayerToolbar.GetLayerToolbar();
 
         root = new VBox(menuBar, hbox, layerToolbar);
         VBox.setVgrow(hbox, Priority.ALWAYS);
@@ -72,6 +85,27 @@ public class App extends Application {
         VBox gridPaneContainer = (VBox) ((HBox) root.getChildren().get(1)).getChildren().get(1);
         gridPaneContainer.getChildren().clear();
         gridPaneContainer.getChildren().add(gridPane);
+    }
+    
+    public void SaveState(){
+        history.add(spritanGrid.TakeSnapshot());
+        redoHistory.clear();
+    }
+    
+    public void Undo(){
+        if (!history.isEmpty()){
+            Memento oldState = history.pop();
+            redoHistory.push(spritanGrid.TakeSnapshot());
+            spritanGrid.Restore(oldState);
+        }
+    }
+    
+    public void Redo() {
+        if (!redoHistory.isEmpty()) {
+            Memento redoState = redoHistory.pop();
+            history.push(spritanGrid.TakeSnapshot());
+            spritanGrid.Restore(redoState);
+        }
     }
 
     public static void main(String[] args) {

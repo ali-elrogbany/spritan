@@ -4,8 +4,9 @@ import com.elrogbany.spritan.utilities.SpritanColor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
-public class SpritanFile implements Serializable {
+public class SpritanFile implements Serializable, Cloneable {
     private static final long serialVersionUID = 1L;
 
     private ArrayList<SpritanLayer> layers;
@@ -116,5 +117,25 @@ public class SpritanFile implements Serializable {
             }
         }
         return pixelData;
+    }
+    
+    @Override
+    public SpritanFile clone() {
+        try {
+            SpritanFile cloned = (SpritanFile) super.clone();
+            
+            // Deep copy of layers
+            cloned.layers = layers.stream()
+                                  .map(SpritanLayer::clone)
+                                  .collect(Collectors.toCollection(ArrayList::new));
+            
+            // Deep copy of selectedColor and colorPalette
+            cloned.selectedColor = selectedColor.clone();
+            cloned.colorPalette = colorPalette.clone();
+            
+            return cloned;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }
