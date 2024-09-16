@@ -42,7 +42,7 @@ public class App extends Application {
         stage.setTitle("Spritan");
         
         root = new VBox();
-        var scene = new Scene(root, 640, 480);
+        var scene = new Scene(root, 1280, 720);
         scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
 
         MenuBar menuBar = SpritanMenu.GetMenuBar(stage);
