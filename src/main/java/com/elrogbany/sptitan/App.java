@@ -12,6 +12,7 @@ import java.util.Stack;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -52,16 +53,16 @@ public class App extends Application {
 
         VBox gridPaneContainer = new VBox();
         gridPaneContainer.setAlignment(javafx.geometry.Pos.CENTER);
+        VBox.setVgrow(gridPaneContainer, Priority.ALWAYS);
 
         HBox hbox = new HBox();
         hbox.setSpacing(10);
         hbox.getChildren().addAll(toolbar, gridPaneContainer, colorPaletteBar);
-
         HBox.setHgrow(gridPaneContainer, Priority.ALWAYS);
-        
+
         ToolBar layerToolbar = SpritanLayerToolbar.GetLayerToolbar();
 
-        root = new VBox(menuBar, hbox, layerToolbar);
+        root.getChildren().addAll(menuBar, hbox, layerToolbar);
         VBox.setVgrow(hbox, Priority.ALWAYS);
         
         scene.setRoot(root);
@@ -87,7 +88,24 @@ public class App extends Application {
     private void UpdateGridPane(GridPane gridPane) {
         VBox gridPaneContainer = (VBox) ((HBox) root.getChildren().get(1)).getChildren().get(1);
         gridPaneContainer.getChildren().clear();
-        gridPaneContainer.getChildren().add(gridPane);
+
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(gridPane);
+
+        // Set the ScrollPane to expand to fill the available space
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+
+        // Create a container to center the GridPane within the ScrollPane
+        VBox centeredContainer = new VBox();
+        centeredContainer.setAlignment(javafx.geometry.Pos.CENTER);
+        centeredContainer.getChildren().add(gridPane);
+
+        scrollPane.setContent(centeredContainer);
+
+        gridPaneContainer.getChildren().add(scrollPane);
     }
     
     public void SaveState(){
