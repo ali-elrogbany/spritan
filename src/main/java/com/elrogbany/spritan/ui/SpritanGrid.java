@@ -83,6 +83,9 @@ public class SpritanGrid {
             }
         }
         
+        pixelsGrid.setMaxWidth(width * 20);
+        pixelsGrid.setMaxHeight(height * 20);
+        
         pixelsGrid.setOnMouseClicked(e -> HandleDrag(e.getX(), e.getY()));
         pixelsGrid.setOnMouseDragged(e -> HandleDrag(e.getX(), e.getY()));
         
