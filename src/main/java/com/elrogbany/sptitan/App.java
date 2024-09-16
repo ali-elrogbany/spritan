@@ -7,8 +7,8 @@ import com.elrogbany.spritan.ui.SpritanGrid.Memento;
 import com.elrogbany.spritan.ui.SpritanLayerToolbar;
 import com.elrogbany.spritan.ui.SpritanMenu;
 import com.elrogbany.spritan.ui.SpritanToolbar;
-import java.util.Deque;
 import java.util.LinkedList;
+import java.util.Stack;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
@@ -26,8 +26,8 @@ import javafx.stage.Stage;
 public class App extends Application {
     public static App instance;
     
-    private Deque<Memento> history;
-    private Deque<Memento> redoHistory;
+    private Stack<Memento> history;
+    private Stack<Memento> redoHistory;
     
     private VBox root;
     private SpritanGrid spritanGrid;
@@ -36,8 +36,8 @@ public class App extends Application {
     public void start(Stage stage) {
         instance = this;
         
-        history = new LinkedList<>();
-        redoHistory = new LinkedList<>();
+        history = new Stack<>();
+        redoHistory = new Stack<>();
         
         stage.setTitle("Spritan");
 

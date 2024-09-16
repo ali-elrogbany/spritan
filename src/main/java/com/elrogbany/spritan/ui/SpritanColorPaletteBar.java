@@ -142,6 +142,8 @@ public class SpritanColorPaletteBar {
         int blue = (int) (selectedColor.getBlue() * 255);
         int alpha = (int) (selectedColor.getOpacity() * 255);
         
+        App.instance.SaveState();
+        
         SpritanColor spritanColor = new SpritanColor(red, green, blue, alpha);
         palette.AddColor(spritanColor);
         UpdateColorPalette(palette);

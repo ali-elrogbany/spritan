@@ -17,6 +17,9 @@ public class SpritanGrid {
     
     private ITool currentTool;
     
+    private int lastRow = -1;
+    private int lastCol = -1;
+    
     public SpritanGrid(int height, int width) {
         spritanFile = new SpritanFile();
         spritanFile.CreateEmptyGrid(height, width);
@@ -83,18 +86,26 @@ public class SpritanGrid {
         pixelsGrid.setOnMouseClicked(e -> HandleDrag(e.getX(), e.getY()));
         pixelsGrid.setOnMouseDragged(e -> HandleDrag(e.getX(), e.getY()));
         
+        pixelsGrid.setOnMouseReleased(e -> ResetLastProcessedPixel());
+        
         pixelsGrid.getStyleClass().add("grid-pane");
     }
 
     private void HandleDrag(double x, double y) {
         int row = (int) (y / (pixelsGrid.getHeight() / pixelsGrid.getRowCount()));
         int col = (int) (x / (pixelsGrid.getWidth() / pixelsGrid.getColumnCount()));
-        Node node = GetNodeAt(row, col);
+        
+        if (row != lastRow || col != lastCol) {
+            Node node = GetNodeAt(row, col);
 
-        if (node != null && currentTool != null) {
-            Rectangle pixel = (Rectangle) node;
-            
-            currentTool.OnPixelClick(this, pixel, row, col);
+            if (node != null && currentTool != null) {
+                Rectangle pixel = (Rectangle) node;
+
+                currentTool.OnPixelClick(this, pixel, row, col);
+                
+                lastRow = row;
+                lastCol = col;
+            }
         }
     }
 
@@ -126,6 +137,11 @@ public class SpritanGrid {
         }
     }
     
+    private void ResetLastProcessedPixel() {
+        lastRow = -1;
+        lastCol = -1;
+    }
+    
     public Memento TakeSnapshot(){
         return new Memento(spritanFile.clone());
     }
@@ -135,6 +151,7 @@ public class SpritanGrid {
         
         DrawSavedImage();
         SpritanLayerToolbar.DisplayLayers(spritanFile);
+        SpritanColorPaletteBar.UpdateColorPalette(spritanFile.GetColorPalette());
     }
     
     public static class Memento {
