@@ -5,13 +5,16 @@ import com.elrogbany.spritan.tools.ITool;
 import com.elrogbany.spritan.tools.PenTool;
 import com.elrogbany.sptitan.App;
 import javafx.geometry.Orientation;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 
 public class SpritanToolbar {
     private static Button activeButton;
 
-    public static ToolBar GetToolbar() {
+    public static ToolBar GetToolbar(Scene scene) {
         ToolBar toolbar = new ToolBar();
         toolbar.setOrientation(Orientation.VERTICAL);
 
@@ -19,6 +22,22 @@ public class SpritanToolbar {
 
         Button penButton = CreateStyledButton("Pen");
         Button eraserButton = CreateStyledButton("Eraser");
+        
+        KeyCodeCombination penShortcut = new KeyCodeCombination(KeyCode.P);
+        scene.addEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, event -> {
+            if (penShortcut.match(event)) {
+                SetCurrentTool(new PenTool(), penButton);
+                event.consume();
+            }
+        });
+        
+        KeyCodeCombination eraserShortcut = new KeyCodeCombination(KeyCode.E);
+        scene.addEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, event -> {
+            if (eraserShortcut.match(event)) {
+                SetCurrentTool(new EraserTool(), eraserButton);
+                event.consume();
+            }
+        });
         
         penButton.setOnAction(e -> {
             SetCurrentTool(new PenTool(), penButton);

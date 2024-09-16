@@ -40,9 +40,13 @@ public class App extends Application {
         redoHistory = new Stack<>();
         
         stage.setTitle("Spritan");
+        
+        root = new VBox();
+        var scene = new Scene(root, 640, 480);
+        scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
 
         MenuBar menuBar = SpritanMenu.GetMenuBar(stage);
-        ToolBar toolbar = SpritanToolbar.GetToolbar();
+        ToolBar toolbar = SpritanToolbar.GetToolbar(scene);
 
         VBox colorPaletteBar = SpritanColorPaletteBar.GetColorPaletteBar();
 
@@ -59,9 +63,8 @@ public class App extends Application {
 
         root = new VBox(menuBar, hbox, layerToolbar);
         VBox.setVgrow(hbox, Priority.ALWAYS);
-
-        var scene = new Scene(root, 640, 480);
-        scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
+        
+        scene.setRoot(root);
 
         stage.setScene(scene);
         stage.show();
