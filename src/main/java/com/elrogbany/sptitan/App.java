@@ -98,12 +98,31 @@ public class App extends Application {
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
-        // Create a container to center the GridPane within the ScrollPane
         VBox centeredContainer = new VBox();
         centeredContainer.setAlignment(javafx.geometry.Pos.CENTER);
         centeredContainer.getChildren().add(gridPane);
-
         scrollPane.setContent(centeredContainer);
+        
+        VBox.setVgrow(scrollPane, Priority.ALWAYS);
+
+        // Add zoom functionality
+        gridPane.setOnScroll(event -> {
+            double zoomFactor = 1.05;
+            double minScale = 0.5;
+            double maxScale = 3.0;
+
+            if (event.getDeltaY() > 0) {
+                if (gridPane.getScaleX() < maxScale) {
+                    gridPane.setScaleX(gridPane.getScaleX() * zoomFactor);
+                    gridPane.setScaleY(gridPane.getScaleY() * zoomFactor);
+                }
+            } else {
+                if (gridPane.getScaleX() > minScale) {
+                    gridPane.setScaleX(gridPane.getScaleX() / zoomFactor);
+                    gridPane.setScaleY(gridPane.getScaleY() / zoomFactor);
+                }
+            }
+        });
 
         gridPaneContainer.getChildren().add(scrollPane);
     }
