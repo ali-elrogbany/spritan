@@ -1,6 +1,7 @@
 package com.elrogbany.spritan.utilities;
 
 import com.elrogbany.spritan.core.SpritanFile;
+import com.elrogbany.spritan.ui.SpritanGrid;
 import com.elrogbany.sptitan.App;
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -16,6 +18,8 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import java.awt.image.*;
+import javax.imageio.ImageIO;
 
 public class SpritanFileOperations {
     private static File currentFile;
@@ -99,6 +103,45 @@ public class SpritanFileOperations {
             System.out.println("File saved successfully.");
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+    
+    public static void ExportToImage(String fileName, String format){
+        SpritanGrid spritanGrid = App.instance.GetSpritanGrid();
+    
+        if (spritanGrid != null) {
+            SpritanFile spritanFile = spritanGrid.GetSpritanFile();
+
+            if (spritanFile != null) {
+                ArrayList<ArrayList<SpritanColor>> pixelData = spritanFile.GetBlendedImage();
+
+                int height = pixelData.size();
+                int width = pixelData.get(0).size();
+
+                BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
+                for (int y = 0; y < height; y++) {
+                    ArrayList<SpritanColor> row = pixelData.get(y);
+                    for (int x = 0; x < width; x++) {
+                        SpritanColor color = row.get(x);
+                        // Get RGBA values from SpritanColor and set the pixel
+                        int rgba = ((color.GetAlpha() & 0xFF) << 24) |  // Alpha
+                                   ((color.GetRed() & 0xFF) << 16) |    // Red
+                                   ((color.GetGreen() & 0xFF) << 8) |   // Green
+                                   ((color.GetBlue() & 0xFF));          // Blue
+                        image.setRGB(x, y, rgba);
+                    }
+                }
+
+                try {
+                    File outputFile = new File(fileName);
+                    // Use the selected format to save the image
+                    ImageIO.write(image, format, outputFile);
+                    System.out.println("Image saved to " + fileName + " as " + format);
+                } catch (IOException e) {
+                    System.err.println("Error saving image file: " + e.getMessage());
+                }
+            }
         }
     }
 }
